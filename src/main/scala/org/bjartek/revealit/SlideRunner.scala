@@ -48,6 +48,7 @@ case class Config(
 object SlideRunner extends App {
 
   import scopt.immutable.OptionParser
+  import scala.language.reflectiveCalls
 
   val defaultConfig = Config()
 
