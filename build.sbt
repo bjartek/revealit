@@ -2,7 +2,7 @@ import AssemblyKeys._ // put this at the top of the file
 
 name := "RevealIT"
 
-version := "1.0-SNAPSHOT"
+version := "1.0"
 
 scalaVersion := "2.10.0-RC2"
 
