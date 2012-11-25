@@ -1,0 +1,3 @@
+class ScalaFoo {
+  println("test")
+}
