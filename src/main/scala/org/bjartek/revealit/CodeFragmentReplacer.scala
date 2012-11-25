@@ -35,7 +35,7 @@ sealed trait CodeFragment {
   def replace(content: String): String = {
     val code = readFile(filename) match {
       case Right(c) => ">" + handleCodeFile(c) + "</code>"
-      case Left(error) => "#code#" + error.getMessage + "#code#"
+      case Left(error) => ">" + error.getMessage + "</code>"
     }
     content.replace(placeholder, code)
   }
