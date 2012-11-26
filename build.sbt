@@ -8,7 +8,11 @@ scalaVersion := "2.10.0-RC2"
 
 libraryDependencies += "com.github.scopt" % "scopt_2.10.0-RC2" % "2.1.0"
 
+
+libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.1"
+
 libraryDependencies += "org.specs2" %% "specs2" % "1.12.3" % "test"
+
 
 resolvers ++= Seq("snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
                     "releases"  at "http://oss.sonatype.org/content/repositories/releases")

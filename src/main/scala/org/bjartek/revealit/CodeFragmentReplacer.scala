@@ -1,6 +1,7 @@
 package org.bjartek.revealit
 
 import io.BufferedSource
+import org.apache.commons.lang3.StringEscapeUtils
 
 object CodeFragmentReplacer {
 
@@ -34,7 +35,7 @@ sealed trait CodeFragment {
 
   def replace(content: String): String = {
     val code = readFile(filename) match {
-      case Right(c) => ">" + handleCodeFile(c) + "</code>"
+      case Right(c) => ">" + StringEscapeUtils.escapeHtml4(handleCodeFile(c)) + "</code>"
       case Left(error) => ">" + error.getMessage + "</code>"
     }
     content.replace(placeholder, code)

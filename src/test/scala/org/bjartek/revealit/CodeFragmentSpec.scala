@@ -70,6 +70,19 @@ class CodeFragmentSpec extends Specification {
 
     }
 
+    "escape special chars in code" in {
+        val code =
+          """
+          <code class="scala">src/test/resources/Escape.java</code>
+          """
+
+        val inserted = CodeFragmentReplacer(code)
+        inserted must contain("List&lt;String&gt;")
+
+
+
+    }
+
   }
 
 }
