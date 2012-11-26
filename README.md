@@ -41,6 +41,7 @@ default: default
  - [sbt-assembly](https://github.com/sbt/sbt-assembly) to assemble the jar
  - [scopt](https://github.com/scopt/scopt) to parse CLI args
  - [specs2](http://etorreborre.github.com/specs2/) for testing
+ - [commons-lang3](https://commons.apache.org/lang/) for escaping html entities in the replaced code
 
 ## License
 

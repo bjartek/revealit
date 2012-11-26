@@ -13,7 +13,7 @@ class CodeFragmentSpec extends Specification {
 
       val inserted = CodeFragmentReplacer(code)
       inserted must contain("<code class=\"scala\"")
-      inserted must contain("class ScalaFoo {\n  println(\"test\")\n}")
+      inserted must contain("class ScalaFoo {\n  println(&quot;test&quot;)\n}")
 
     }
     "insert partial java file" in {
@@ -21,7 +21,7 @@ class CodeFragmentSpec extends Specification {
                      <code class="java">src/test/resources/Foo.java:4-6</code>"""
       val inserted = CodeFragmentReplacer(code)
       inserted must contain("<code class=\"java\">")
-      inserted must contain("public static void hello() {\n        System.out.println(\"hello\");\n    }")
+      inserted must contain("public static void hello() {\n        System.out.println(&quot;hello&quot;);\n    }")
     }
 
     "insert error message on wrong partial spesification" in {
