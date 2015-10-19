@@ -1,28 +1,17 @@
-import AssemblyKeys._ // put this at the top of the file
-
 name := "RevealIT"
 
-version := "1.0"
+version := "1.1"
 
-scalaVersion := "2.10.0-RC2"
+scalaVersion := "2.11.7"
 
-libraryDependencies += "com.github.scopt" % "scopt_2.10.0-RC2" % "2.1.0"
+libraryDependencies += "com.github.scopt" %% "scopt" % "3.3.0"
 
+libraryDependencies+= "org.apache.commons" % "commons-lang3" % "3.4"
 
-libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.1"
+libraryDependencies ++= Seq("org.specs2" %% "specs2-core" % "3.6.5" % "test")
 
-libraryDependencies += "org.specs2" %% "specs2" % "1.12.3" % "test"
+scalacOptions in Test ++= Seq("-Yrangepos")
 
+resolvers += Resolver.sonatypeRepo("public")
 
-resolvers ++= Seq("snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
-                    "releases"  at "http://oss.sonatype.org/content/repositories/releases")
-
-assemblySettings
-
-jarName in assembly := "revealit.jar"
-
-target in assembly := new File("revealit")
-
-//comment in this to exclude scala from jar
-//assembleArtifact in packageScala := false
-
+assemblyJarName in assembly := "revealit.jar"

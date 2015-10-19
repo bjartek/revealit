@@ -1,6 +1,8 @@
 package org.bjartek.revealit
 
-import java.io.{FileNotFoundException, FileWriter, File}
+import java.io.{File, FileWriter}
+
+import scopt.OptionParser
 
 
 case class Config(
@@ -9,45 +11,10 @@ case class Config(
                    name: String = "Reveal.js Presentation",
                    transition: String = "default",
                    template: File = new File("template.html")
-                   ) {
-
-
-  def parseTransition(t: String) = {
-    if (SlideRunner.transitions.contains(t)) {
-      this.copy(transition = t)
-    } else {
-      throw new IllegalArgumentException("Transition [" + t + "] not one of " + SlideRunner.transitions.mkString(","))
-    }
-  }
-
-  def parseFiles(f: String) = {
-    val file = new File(f)
-    if (file.isDirectory && file.canRead) {
-      this.copy(files = file)
-    } else {
-      throw  filesError(file)
-    }
-  }
-
-  def filesError(file:File) =   new FileNotFoundException("Files [" + file.getName + "] is not a readable directory")
-
-
-  def validateConfig(): Either[Throwable, Boolean] = {
-
-    if (!files.isDirectory || !files.canRead) {
-      Left(filesError(files))
-    } else if (!template.isFile || !template.canRead) {
-      Left(new FileNotFoundException("Cannot read template file [" + template.getName + "]"))
-    } else {
-      Right(true)
-    }
-  }
-
-}
+                   )
 
 object SlideRunner extends App {
 
-  import scopt.immutable.OptionParser
   import scala.language.reflectiveCalls
 
   val defaultConfig = Config()
@@ -64,39 +31,40 @@ object SlideRunner extends App {
 
 
   val parser = new OptionParser[Config]("java -jar revealit.jar ") {
-    def options = Seq(
-      opt("s", "slides", "Where to find the files with slides default: " + defaultConfig.files) {
-        (v: String, c: Config) => c.parseFiles(v)
-      },
-      opt("rf", "resultFile", "Name of result file default: " + defaultConfig.resultFile) {
-        (v: String, c: Config) => c.copy(resultFile = new File(v))
-      },
-      opt("n", "name", "Title of HTML page default: " + defaultConfig.name) {
-        (v: String, c: Config) => c.copy(name = v)
-      },
-      opt("t", "transition", "Transition. One of " + transitions.mkString("|") + " default: " + defaultConfig.transition) {
-        (v: String, c: Config) => c.parseTransition(v)
-      }
-      ,
-      opt("tpl", "template", "Template to use  default: " + defaultConfig.template) {
-        (v: String, c: Config) => c.copy(template = new File(v))
-      }
-    )
+
+    opt[File]('s', "slides") validate {
+      f: File => if (f.isDirectory && f.canRead) success else failure("Slides directory must be readable")
+    } action {
+      (x,c) => c.copy(files = x)
+    } valueName("<file>") text("Where to find the files with slides default: " + defaultConfig.files)
+    opt[File]('r', "resultfile") action {
+      (x,c) => c.copy(resultFile = x)
+    } valueName("<file>") text("Name of result file default: " + defaultConfig.resultFile)
+    opt[String]('n', "name") text("Title of HTML page default: " + defaultConfig.name) action{
+      (x,c) => c.copy(name = x)
+    }
+    opt[String]('t', "transition") text("Transition. One of " + transitions.mkString("|") + " default: " + defaultConfig.transition) validate {
+      v: String => if (SlideRunner.transitions.contains(v)) success else failure("Illegal value")
+    } action{
+      (x,c) => c.copy(transition = x)
+    }
+    opt[File]("template") abbr("tpl") validate {
+      f: File => if (f.canRead) success else failure("Template must be readable file")
+    }action {
+      (x,c) => c.copy(template = x)
+    } valueName("<file>") text("Template to use  default: " + defaultConfig.template)
+
   }
 
-  parser.parse(args, Config()) map {
-    config => {
-      config.validateConfig() match {
-        case Left(error) => println(error.getMessage); parser.showUsage
-        case Right(_) => {
-          using(new FileWriter(config.resultFile)) {
-            _.write(new SlideBuilder(config).make())
-          }
-
-        }
+  parser.parse(args, Config()) match {
+    case Some(config) =>  {
+      using(new FileWriter(config.resultFile)) {
+        _.write(new SlideBuilder(config).make())
       }
     }
+    case None =>
   }
+
 }
 
 
