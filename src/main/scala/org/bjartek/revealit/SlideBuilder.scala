@@ -30,11 +30,23 @@ class SlideBuilder(config: Config) {
 
   }
 
+  val mermaidBlock: String = """<section class="diagram-slide>
+      <span class="diagram-data">
+        #content#
+      </span>
+      <div class="diagram-display"></div>
+    </section>"""
+
+  def buildMermaidSlide(s: String): String = {
+        mermaidBlock.replace("#content#", s);
+  }
 
   def fetchAndBuildSlide(file: File): String = {
     val text = scala.io.Source.fromFile(file).mkString
     if (file.getName.endsWith(".md")) {
       buildMarkdownSlide(text)
+    }else if(file.getName.endsWith(".mermaid")) {
+      buildMermaidSlide(text)
     } else {
       buildSlide(text)
     }

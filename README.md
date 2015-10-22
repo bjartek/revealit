@@ -1,6 +1,6 @@
 # RevealIT
 
-Combine html/md files into a reveal.js presentation. 
+Combine html/md/mermaid files into a reveal.js presentation. 
 
 
 - slides are sorted using natural ordering. Suggested naming is numbers. 1.md, 2.md aso
@@ -14,29 +14,35 @@ Combine html/md files into a reveal.js presentation.
   - _#transition#_ is replaced with the chosen transition
   - _#name#_ is replaced with the name of the presentation 
  - Assembled with the scala-library for convenience. See buid.sbt if you do not want this for a slimmer jar.
-
+- in order to show [mermaid|http://knsv.github.io/mermaid/] diagrams properly install [
+  - you also probably want to hide all   `diagram-data` classes
+  
 ## How to use
 
  - download [reveal.js](https://github.com/hakimel/reveal.js/downloads) and unzip it
+ - download  [mermaid plugin |https://github.com/ludwick/reveal.js-mermaid-plugin] and install it in reveal.js
+ - download [code focus plugin|this plugin|https://github.com/ludwick/reveal.js-mermaid-plugin] and install it in reveal.js
+ - optionally if you do not want mermaid or code focus then just remove the relevant code from the template
  - copy over the contents from the `revealit` folder into the unziped folder
- - optionally compare `index.html` and `template.html` into a new `template.html 
+ - optionally compare `index.html` and `template.html` into a new `template.html` 
  - `java -jar revealit.jar` will build all html/md files in slides into `index.html` overwriting it.
 
 ## Usage
-<pre>Usage: java -jar revealit.jar  [options] 
 
-  -s <value> | --slides <value>
+<pre>Usage: java -jar revealit.jar  [options]
+
+  -s <file> | --slides <file>
         Where to find the files with slides default: slides
-  -rf <value> | --resultFile <value>
+  -r <file> | --resultfile <file>
         Name of result file default: index.html
   -n <value> | --name <value>
         Title of HTML page default: Reveal.js Presentation
-  -t <value> | --title <value>
-        Transition. One of default|cube|concave|page|linear|zoom|none
-default: default
-  -tpl <value> | --template <value>
+  -t <value> | --transition <value>
+        Transition. One of default|cube|concave|page|linear|zoom|none default: default
+  -tpl <file> | --template <file>
         Template to use  default: template.html
 </pre>
+
 ## Depencies
  - [sbt-assembly](https://github.com/sbt/sbt-assembly) to assemble the jar
  - [scopt](https://github.com/scopt/scopt) to parse CLI args
@@ -45,7 +51,7 @@ default: default
 
 ## License
 
-Copyright © 2012 Bjarte Stien Karlsen
+Copyright © 2015 Bjarte Stien Karlsen
 
 Distributed under the
 [Mozilla Public License](http://mozilla.org/MPL/2.0/), version 2.0.
