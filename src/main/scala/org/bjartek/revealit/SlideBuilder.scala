@@ -30,7 +30,7 @@ class SlideBuilder(config: Config) {
 
   }
 
-  val mermaidBlock: String = """<section class="diagram-slide>
+  val mermaidBlock: String = """<section class="diagram-slide">
       <span class="diagram-data">
         #content#
       </span>
