@@ -23,7 +23,7 @@ class SlideBuilder(config: Config) {
 
   def buildFileTree(): List[List[File]] = {
     val allFiles = config.files.listFiles()
-    val presentationFiles = allFiles.filter(file => file.getName.endsWith(".md") || file.getName.endsWith(".html"))
+    val presentationFiles = allFiles.filter(file => file.getName.endsWith(".md") || file.getName.endsWith(".html") || file.getName.endsWith(".mermaid"))
     val grouped = presentationFiles.groupBy(file => file.getName.split('.').head)
     val flattend = grouped.map(_._2.toList).toList
     flattend.sortBy(_.head.getName)

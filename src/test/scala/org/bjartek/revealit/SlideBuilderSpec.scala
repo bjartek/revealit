@@ -21,7 +21,8 @@ class SlideBuilderSpec extends Specification {
       tree must equalTo(List(
         List(new File("src/test/resources/files/0.1.html"), new File("src/test/resources/files/0.2.html"), new File("src/test/resources/files/0.3.html")),
         List(new File("src/test/resources/files/1.md")),
-        List(new File("src/test/resources/files/2.html"))))
+        List(new File("src/test/resources/files/2.html")),
+          List(new File("src/test/resources/files/3.mermaid"))))
     }
 
   }
